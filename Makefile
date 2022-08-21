@@ -16,10 +16,15 @@ server:
 	go build -ldflags "-X main.version=${version}" ./cmd/ck-server
 	mv ck-server* ./build
 
+ovpn-plugin: 
+	mkdir -p build
+	go build -buildmode=c-archive -ldflags "-X main.version=${version}" ./cmd/ck-ovpn-plugin
+	mv ck-ovpn-plugin* ./build
+
 install:
 	mv build/ck-* /usr/local/bin
 
-all: client server
+all: client server ovpn-plugin
 
 clean:
 	rm -rf ./build/ck-*
