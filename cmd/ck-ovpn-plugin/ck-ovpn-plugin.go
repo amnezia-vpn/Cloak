@@ -25,7 +25,27 @@ import (
 import (
 	"encoding/binary"
 	"encoding/json"
+	"syscall"
 )
+
+var fd int
+
+func socket_get_fd(network string, address string, c syscall.RawConn) error {
+	fn := func(s uintptr) {
+		fd = int(s)
+	}
+
+	if err := c.Control(fn); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+//export Cloak_native_handle
+func Cloak_native_handle() int {
+ 	return fd
+}
 
 func generateClientConfigs(rawConfig client.RawConfig, state common.WorldState) (client.LocalConnConfig, client.RemoteConnConfig, client.AuthInfo) {
 	lcl, rmt, auth, err := rawConfig.ProcessRawConfig(state)
@@ -84,12 +104,10 @@ func Cloak_dial() (clientKey int) {
 	worldState := common.RealWorldState
 	localConfig, remoteConfig, authInfo := generateClientConfigs(singleplexTCPConfig, worldState)
 
-	log.SetLevel(log.TraceLevel)
-
 	var localDialer common.Dialer
 	var localListener *connutil.PipeListener
 
-	d := &net.Dialer{Control: protector, KeepAlive: remoteConfig.KeepAlive}
+	d := &net.Dialer{Control: socket_get_fd, KeepAlive: remoteConfig.KeepAlive}
 
 	seshMaker = func() *multiplex.Session {
 		authInfo := authInfo // copy the struct because we are overwriting SessionId
