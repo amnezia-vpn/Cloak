@@ -19,12 +19,12 @@ server:
 ovpn-plugin: 
 	mkdir -p build
 	go build -buildmode=c-archive -ldflags "-X main.version=${version}" ./cmd/ck-ovpn-plugin
-	mv ck-ovpn-plugin* ./build
+	mv libck-ovpn-plugin* ./build
 
 install:
-	mv build/ck-* /usr/local/bin
+	mv build/libck-* /usr/local/bin
 
 all: client server ovpn-plugin
 
 clean:
-	rm -rf ./build/ck-*
+	rm -rf ./build/libck-*
