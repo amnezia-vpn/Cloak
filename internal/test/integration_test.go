@@ -5,18 +5,19 @@ import (
 	"encoding/base64"
 	"encoding/binary"
 	"fmt"
-	"github.com/cbeuw/Cloak/internal/client"
-	"github.com/cbeuw/Cloak/internal/common"
-	mux "github.com/cbeuw/Cloak/internal/multiplex"
-	"github.com/cbeuw/Cloak/internal/server"
-	"github.com/cbeuw/connutil"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"math/rand"
 	"net"
 	"sync"
 	"testing"
 	"time"
+
+	"github.com/cbeuw/Cloak/internal/client"
+	"github.com/cbeuw/Cloak/internal/common"
+	mux "github.com/cbeuw/Cloak/internal/multiplex"
+	"github.com/cbeuw/Cloak/internal/server"
+	"github.com/cbeuw/connutil"
+	"github.com/stretchr/testify/assert"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -120,7 +121,7 @@ var singleplexTCPConfig = client.RawConfig{
 	RemotePort:       "9999",
 	LocalHost:        "127.0.0.1",
 	LocalPort:        "9999",
-	BrowserSig:       "chrome",
+	BrowserSig:       "safari",
 }
 
 func generateClientConfigs(rawConfig client.RawConfig, state common.WorldState) (client.LocalConnConfig, client.RemoteConnConfig, client.AuthInfo) {

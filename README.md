@@ -155,8 +155,13 @@ Example:
 `CDNOriginHost` is the domain name of the _origin_ server (i.e. the server running Cloak) under `CDN` mode. This only
 has effect when `Transport` is set to `CDN`. If unset, it will default to the remote hostname supplied via the
 commandline argument (in standalone mode), or by Shadowsocks (in plugin mode). After a TLS session is established with
-the CDN server, this domain name will be used in the HTTP request to ask the CDN server to establish a WebSocket
-connection with this host.
+the CDN server, this domain name will be used in the `Host` header of the HTTP request to ask the CDN server to
+establish a WebSocket connection with this host.
+
+`CDNWsUrlPath` is the url path used to build websocket request sent under `CDN` mode, and also only has effect
+when `Transport` is set to `CDN`. If unset, it will default to "/". This option is used to build the first line of the
+HTTP request after a TLS session is extablished. It's mainly for a Cloak server behind a reverse proxy, while only
+requests under specific url path are forwarded.
 
 `NumConn` is the amount of underlying TCP connections you want to use. The default of 4 should be appropriate for most
 people. Setting it too high will hinder the performance. Setting it to 0 will disable connection multiplexing and each
@@ -164,7 +169,7 @@ TCP connection will spawn a separate short-lived session that will be closed aft
 behave like GoQuiet. This maybe useful for people with unstable connections.
 
 `BrowserSig` is the browser you want to **appear** to be using. It's not relevant to the browser you are actually using.
-Currently, `chrome` and `firefox` are supported.
+Currently, `chrome`, `firefox` and `safari` are supported.
 
 `KeepAlive` is the number of seconds to tell the OS to wait after no activity before sending TCP KeepAlive probes to the
 Cloak server. Zero or negative value disables it. Default is 0 (disabled). Warning: Enabling it might make your server
