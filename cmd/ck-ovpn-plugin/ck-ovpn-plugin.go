@@ -178,9 +178,9 @@ func Cloak_read(client_id int, buffer unsafe.Pointer, buffer_length int) int {
 
 //export Cloak_close_connection
 func Cloak_close_connection(client_id int) {
-
 	var connection = CloakConnections[client_id]
 	connection.Close()
+	syscall.Close(int(fd))
 	delete(CloakConnections, client_id)
 }
 
