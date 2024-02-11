@@ -1,4 +1,4 @@
-// +build !windows
+// +build windows
 
 //
 // Copyright (c) 2022, Mykola Baibuz <mykola.baibuz@gmail.com> for Amnezia-VPN project (https://amnezia.org/)
@@ -180,7 +180,7 @@ func Cloak_read(client_id int, buffer unsafe.Pointer, buffer_length int) int {
 func Cloak_close_connection(client_id int) {
 	var connection = CloakConnections[client_id]
 	connection.Close()
-	syscall.Close(int(fd))
+	syscall.Close(syscall.Handle(fd))
 	delete(CloakConnections, client_id)
 }
 
